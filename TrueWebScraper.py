@@ -54,6 +54,7 @@ catbus_lis = []
 year_lis = []
 valueplus_lis = []
 phone_lis = []
+tel_lis = []
 
 for i in url_lis:
     
@@ -181,6 +182,32 @@ for i in url_lis:
     except: 
         bussiness_lis.append("ไม่มี")
 
+    tel_dump = ""
+    for x in range(1,20):
+        try:
+            tel = driver.find_element(By.XPATH,'//*[@id="__layout"]/div/div/div[4]/div/div[2]/div[1]/div/div/table/tbody/tr[{}]/th'.format(x)).text
+            print(tel)
+            if tel.strip() == "โทรศัพท์":
+                try:
+                        tel = driver.find_element(By.XPATH,'//*[@id="__layout"]/div/div/div[4]/div/div[2]/div[1]/div/div/table/tbody/tr[{}]/td'.format(x)).text
+                        
+                        print(tel)
+                        tel_dump = tel
+                        #tel_lis.append(tel)
+                        break
+                except:
+                        pass
+                        #tel_lis.append("ไม่มี")
+            else: 
+                tel_dump = "ไม่มี"
+                pass
+        except: 
+            pass
+    print("tel_dump : ",tel_dump)
+    tel_lis.append(tel_dump)
+
+
+print("tel lis : ",tel_lis,len(tel_lis))
 df = pd.DataFrame()
 df['ชื่อบริษัท'] = title_lis 
 
@@ -200,7 +227,7 @@ df['สถานภาพกิจการ'] = stat_lis
 df['ประเภทธุรกิจ'] = catbus_lis
 df['ปีที่ส่งงบการเงิน'] = year_lis
 df['จดทะเบียนภาษีมูลค่าเพิ่ม'] = valueplus_lis
-df['โทรศัพท์'] = phone_lis
+df['โทรศัพท์'] = tel_lis
 
 
 
